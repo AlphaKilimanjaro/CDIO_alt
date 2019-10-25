@@ -17,8 +17,8 @@ public class DiceGame {
         player1 = new Player(gui.getUserString("Player 1: What is your name?"));
         player2 = new Player(gui.getUserString("Player 2: What is your name?"));
 
-        gui.addPlayer(guiPlayer1 = new GUI_Player(player1.getName()));
-        gui.addPlayer(guiPlayer2 = new GUI_Player(player2.getName()));
+        gui.addPlayer(guiPlayer1 = new GUI_Player(player1.getName(), 0));
+        gui.addPlayer(guiPlayer2 = new GUI_Player(player2.getName(), 0));
 
         gui.showMessage("Alright, let's get started...");
     }
@@ -33,7 +33,7 @@ public class DiceGame {
                 gui.showMessage(player1.rollDice());
                 gui.setDice(player1.getDieValue1(), player1.getDieValue2());
                 nextPlayer = doPlayerConditions(player1);
-                updatePoints();
+                updatePoints(player1);
             }
             if(gameHasEnded) continue;
             nextPlayer = false;
@@ -42,7 +42,7 @@ public class DiceGame {
                 gui.showMessage(player2.rollDice());
                 gui.setDice(player2.getDieValue1(), player2.getDieValue2());
                 nextPlayer = doPlayerConditions(player2);
-                updatePoints();
+                updatePoints(player2);
             }
         }
     }
@@ -54,11 +54,12 @@ public class DiceGame {
             return true;
         } else if (player.hasDoubles()) {
             if (player.hasDoubleOne()) {
-                gui.showMessage(player.getName() + " has lost his points :(");
+                gui.showMessage(player.getName() + " has lost his points :(.");
                 player.setPoints(0);
                 return false;
             }
             if (player.hasDoubleSix()) {
+                gui.showMessage(player.getName() + " has earned and extra throw! :-D");
                 return false;
             }
             return false;
@@ -66,9 +67,8 @@ public class DiceGame {
         return true;
     }
 
-    private void updatePoints() {
-        player1.addPoints();
-        player2.addPoints();
+    private void updatePoints(Player player) {
+        player.addPoints();
         guiPlayer1.setBalance(player1.getPoints());
         guiPlayer2.setBalance(player2.getPoints());
     }
