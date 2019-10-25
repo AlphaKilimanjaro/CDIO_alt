@@ -55,13 +55,10 @@ public class DiceGame {
         } else if (player.hasDoubles()) {
             if (player.hasDoubleOne()) {
                 gui.showMessage(player.getName() + " has lost his points :(.");
-                player.setPoints(0);
+                player.setPoints(-2); //to counter addPoints()
                 return false;
             }
-            if (player.hasDoubleSix()) {
-                gui.showMessage(player.getName() + " has earned and extra throw! :-D");
-                return false;
-            }
+            gui.showMessage(player.getName() + " has earned and extra throw! :-D");
             return false;
         }
         return true;
