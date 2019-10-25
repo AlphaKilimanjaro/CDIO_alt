@@ -55,17 +55,18 @@ public class DiceGame {
         } else if (player.hasDoubles()) {
             if (player.hasDoubleOne()) {
                 gui.showMessage(player.getName() + " has lost his points :(.");
-                player.setPoints(-2); //to counter addPoints()
+                player.setPoints(0);
                 return false;
             }
-            gui.showMessage(player.getName() + " has earned and extra throw! :-D");
+            gui.showMessage(player.getName() + " has earned an extra throw! :-D");
             return false;
         }
         return true;
     }
 
     private void updatePoints(Player player) {
-        player.addPoints();
+        if(!player.hasDoubleOne())
+            player.addPoints();
         guiPlayer1.setBalance(player1.getPoints());
         guiPlayer2.setBalance(player2.getPoints());
     }
