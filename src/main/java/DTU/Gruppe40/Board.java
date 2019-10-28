@@ -20,6 +20,9 @@ public class Board {
         else
             return null;
     }
+    public int getTileCount(){
+        return tileCount;
+    }
 
     public void addTile(String _name, String _text, int _money)
     {

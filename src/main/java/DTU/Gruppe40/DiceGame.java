@@ -1,29 +1,42 @@
 package DTU.Gruppe40;
 
+import gui_codebehind.GUI_FieldFactory;
+import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
+import gui_fields.GUI_Street;
 import gui_main.GUI;
 
+import java.awt.*;
+
 public class DiceGame {
-    private GUI gui;
+
     private Boolean gameHasEnded;
     private Player player1, player2;
     private GUI_Player guiPlayer1, guiPlayer2;
     private Board board;
-
+    private GUI_Field [] fields = new GUI_Field[12];
     public DiceGame() {
-        gui = new GUI();
+        createBoard();
+
+        //GUI.setNull_fields_allowed(true);
+        for(int i =0; i <= board.getTileCount()-1; i ++){
+            fields[i] = new GUI_Street(board.getTile(i).getName(), "", board.getTile(i).getText(), "", Color.WHITE, Color.BLACK);
+        }
+
+        GUI gui = new GUI(fields);
+        fields[0].setCar(guiPlayer1, false);
 
         gui.showMessage("Welcome to HyperDice, earthlings! :-D");
 
         player1 = new Player(gui.getUserString("Player 1: What is your name?"));
         player2 = new Player(gui.getUserString("Player 2: What is your name?"));
 
-        gui.addPlayer(guiPlayer1 = new GUI_Player(player1.getName(), 0));
-        gui.addPlayer(guiPlayer2 = new GUI_Player(player2.getName(), 0));
+        gui.addPlayer(guiPlayer1 = new GUI_Player(player1.getName(), 1000));
+        gui.addPlayer(guiPlayer2 = new GUI_Player(player2.getName(), 1000));
 
         gui.showMessage("Alright, let's get started...");
 
-        createBoard();
+
     }
 
     public void createBoard(){
@@ -51,6 +64,7 @@ public class DiceGame {
             while(!nextPlayer) {
                 gui.getUserString(player1.askThrow());
                 int roll = player1.rollDice();
+                move(roll, guiPlayer1);
                 Tile tile = board.getTile(roll);
                 updatePoints(player1);
                 gui.setDice(player1.getDieValue1(), player1.getDieValue2());
@@ -62,6 +76,7 @@ public class DiceGame {
             while(!nextPlayer) {
                 gui.getUserString(player2.askThrow());
                 int roll = player2.rollDice();
+                move(roll,guiPlayer2);
                 Tile tile = board.getTile(roll);
                 updatePoints(player2);
                 gui.setDice(player2.getDieValue1(), player2.getDieValue2());
@@ -69,6 +84,10 @@ public class DiceGame {
                 nextPlayer = doPlayerConditions(player2);
             }
         }
+    }
+
+    private void move (int pos,  GUI_Player player){
+        fields[pos].setCar(player,true);
     }
 
     private Boolean doPlayerConditions(Player player) {
