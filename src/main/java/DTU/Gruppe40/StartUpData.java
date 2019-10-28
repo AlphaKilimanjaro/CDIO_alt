@@ -33,7 +33,7 @@ int money;
                 };
 
         for (int i = 0; i <= StartTile.length; i++)
-            board.AddTile(StartTile[i].name, StartTile[i].text, StartTile[i].money);
+            board.addTile(StartTile[i].name, StartTile[i].text, StartTile[i].money);
 
         System.out.println(board.tiles.length);
 

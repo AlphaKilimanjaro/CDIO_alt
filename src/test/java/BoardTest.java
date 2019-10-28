@@ -20,7 +20,7 @@ class BoardTest {
     void getTile() {
         Board board = new Board(8);
 
-        board.AddTile("test1","asdf",500);
+        board.addTile("test1","asdf",500);
         assertNotEquals(null, board.getTile(0));
     }
 

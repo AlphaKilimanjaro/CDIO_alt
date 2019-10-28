@@ -21,7 +21,7 @@ public class Board {
             return null;
     }
 
-    public void AddTile(String _name, String _text, int _money)
+    public void addTile(String _name, String _text, int _money)
     {
         if (tiles.length >= tileCount) {
             tiles[tileCount] = new Tile(_name, _text, _money);

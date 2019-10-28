@@ -5,7 +5,9 @@ public class Player {
     private String name;
     private Die die1;
     private Die die2;
-    //private Boolean didDouble6;
+    private int currentTile;
+
+
 
     public Player(String name) {
         die1 = new Die();
@@ -23,8 +25,8 @@ public class Player {
         points = p;
     }
 
-    public void addPoints() {
-        this.points += die1.getFaceValue() + die2.getFaceValue();
+    public int addPoints(int points) {
+        return this.points += points;
     }
 
     public String getName() {
@@ -35,11 +37,15 @@ public class Player {
         return "Will you roll your dice, " + name + "?";
     }
 
-    public String rollDice() {
+    public int rollDice() {
         int value1 = die1.roll();
         int value2 = die2.roll();
 
-        return "Die rolled, result: " + value1 + " - " + value2;
+        return currentTile = value1 + value2;
+    }
+
+    public int getCurrentTile() {
+        return currentTile;
     }
 
     public int getDieValue1() {
@@ -55,7 +61,11 @@ public class Player {
     }
 
     public Boolean hasWon() {
-        return points >= 40 && hasDoubleSix();
+        return points >= 3000 /*&& hasDoubleSix()*/;
+    }
+
+    public Boolean hasLost(){
+        return points < 0;
     }
 
     public Boolean hasDoubleOne() {
