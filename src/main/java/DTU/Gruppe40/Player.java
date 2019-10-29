@@ -5,6 +5,7 @@ public class Player {
     private String name;
     private Die die1;
     private Die die2;
+    private int car = 0;
     private int currentTile;
 
 
@@ -16,7 +17,12 @@ public class Player {
         this.name = name;
         //didDouble6 = false;
     }
-
+    public int getcar(){
+        return this.car;
+    }
+    public void setcar(int pos){
+        this.car = pos;
+    }
     public int getPoints() {
         return points;
     }
@@ -25,8 +31,8 @@ public class Player {
         points = p;
     }
 
-    public int addPoints(int points) {
-        return this.points += points;
+    public void addPoints(int p) {
+       setPoints(this.points + p);
     }
 
     public String getName() {
