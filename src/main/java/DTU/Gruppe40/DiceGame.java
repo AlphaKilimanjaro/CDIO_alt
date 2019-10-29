@@ -35,6 +35,8 @@ public class DiceGame {
 
         gui.addPlayer(guiPlayer1 = new GUI_Player(player1.getName(), 1000));
         gui.addPlayer(guiPlayer2 = new GUI_Player(player2.getName(), 1000));
+        updatePoints(player1, guiPlayer1.getBalance());
+        updatePoints(player2, guiPlayer2.getBalance());
 
         gui.showMessage("Alright, let's get started...");
 
@@ -69,6 +71,7 @@ public class DiceGame {
                 move(roll, player1);
                 Tile tile = board.getTile(roll);
                 updatePoints(player1,tile.money);
+                guiPlayer1.setBalance(player1.getPoints());
                 gui.setDice(player1.getDieValue1(), player1.getDieValue2());
                 gui.showMessage(tile.getName() + ": " + tile.getText());
                 nextPlayer = doPlayerConditions(player1);
@@ -81,6 +84,7 @@ public class DiceGame {
                 move(roll,player2);
                 Tile tile = board.getTile(roll);
                 updatePoints(player2,tile.money);
+                guiPlayer2.setBalance(player2.getPoints());
                 gui.setDice(player2.getDieValue1(), player2.getDieValue2());
                 gui.showMessage(tile.getName() + ": " + tile.getText());
                 nextPlayer = doPlayerConditions(player2);
@@ -119,5 +123,6 @@ public class DiceGame {
 
     private void updatePoints(Player player, int point) {
        player.addPoints(point);
+        System.out.println(player.getName() + " " + player.getPoints());
     }
 }

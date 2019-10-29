@@ -32,7 +32,7 @@ public class Player {
     }
 
     public void addPoints(int p) {
-       this.points = this.points += p;
+       setPoints(this.points + p);
     }
 
     public String getName() {
