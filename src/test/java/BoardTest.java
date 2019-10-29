@@ -1,5 +1,4 @@
 import DTU.Gruppe40.Board;
-import DTU.Gruppe40.StartUpData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
