@@ -15,6 +15,8 @@ public class DiceGame {
     private GUI_Player guiPlayer1, guiPlayer2;
     private Board board;
     private GUI_Field [] fields = new GUI_Field[12];
+    private GUI gui;
+
     public DiceGame() {
         createBoard();
 
@@ -23,8 +25,8 @@ public class DiceGame {
             fields[i] = new GUI_Street(board.getTile(i).getName(), "", board.getTile(i).getText(), "", Color.WHITE, Color.BLACK);
         }
 
-        GUI gui = new GUI(fields);
-        fields[0].setCar(guiPlayer1, false);
+        gui = new GUI(fields);
+       // fields[0].setCar(guiPlayer1, true);
 
         gui.showMessage("Welcome to HyperDice, earthlings! :-D");
 
@@ -64,9 +66,9 @@ public class DiceGame {
             while(!nextPlayer) {
                 gui.getUserString(player1.askThrow());
                 int roll = player1.rollDice();
-                move(roll, guiPlayer1);
+                move(roll, player1);
                 Tile tile = board.getTile(roll);
-                updatePoints(player1);
+                updatePoints(player1,tile.money);
                 gui.setDice(player1.getDieValue1(), player1.getDieValue2());
                 gui.showMessage(tile.getName() + ": " + tile.getText());
                 nextPlayer = doPlayerConditions(player1);
@@ -76,18 +78,27 @@ public class DiceGame {
             while(!nextPlayer) {
                 gui.getUserString(player2.askThrow());
                 int roll = player2.rollDice();
-                move(roll,guiPlayer2);
+                move(roll,player2);
                 Tile tile = board.getTile(roll);
-                updatePoints(player2);
+                updatePoints(player2,tile.money);
                 gui.setDice(player2.getDieValue1(), player2.getDieValue2());
                 gui.showMessage(tile.getName() + ": " + tile.getText());
                 nextPlayer = doPlayerConditions(player2);
+
             }
         }
     }
 
-    private void move (int pos,  GUI_Player player){
-        fields[pos].setCar(player,true);
+    private void move (int pos,  Player player){
+        player.setcar(pos);
+        updateCars();
+    }
+    private void updateCars(){
+        for(GUI_Field fl : fields){
+            fl.removeAllCars();
+        }
+        fields[player1.getcar()].setCar(guiPlayer1, true);
+        fields[player2.getcar()].setCar(guiPlayer2, true);
     }
 
     private Boolean doPlayerConditions(Player player) {
@@ -106,8 +117,7 @@ public class DiceGame {
         return true;
     }
 
-    private void updatePoints(Player player) {
-        guiPlayer1.setBalance(player1.addPoints(board.getTile(player1.getCurrentTile()).getMoney()));
-        guiPlayer2.setBalance(player2.addPoints(board.getTile(player2.getCurrentTile()).getMoney()));
+    private void updatePoints(Player player, int point) {
+       player.addPoints(point);
     }
 }
