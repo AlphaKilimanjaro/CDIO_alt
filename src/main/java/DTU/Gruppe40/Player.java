@@ -5,24 +5,15 @@ public class Player {
     private String name;
     private Die die1;
     private Die die2;
-    private int car = 0;
     private int currentTile;
 
-
-
-    public Player(String name) {
+    public Player(String name, int initialPoints) {
         die1 = new Die();
         die2 = new Die();
-        points = 0;
+        this.points = initialPoints;
         this.name = name;
-        //didDouble6 = false;
     }
-    public int getcar(){
-        return this.car;
-    }
-    public void setcar(int pos){
-        this.car = pos;
-    }
+
     public int getPoints() {
         return points;
     }
@@ -37,10 +28,6 @@ public class Player {
 
     public String getName() {
         return this.name;
-    }
-
-    public String askThrow() {
-        return "Will you roll your dice, " + name + "?";
     }
 
     public int rollDice() {
@@ -62,9 +49,9 @@ public class Player {
         return die2.getFaceValue();
     }
 
-    public Boolean hasDoubles() {
+    /*public Boolean hasDoubles() {
         return die1.getFaceValue() == die2.getFaceValue();
-    }
+    }*/
 
     public Boolean hasWon() {
         return points >= 3000 /*&& hasDoubleSix()*/;
@@ -74,12 +61,12 @@ public class Player {
         return points < 0;
     }
 
-    public Boolean hasDoubleOne() {
+    /*public Boolean hasDoubleOne() {
         return hasDoubles() && die1.getFaceValue() == 1;
     }
 
     public Boolean hasDoubleSix() {
         //didDouble6 = true;
         return hasDoubles() && die1.getFaceValue() == 6;
-    }
+    }*/
 }

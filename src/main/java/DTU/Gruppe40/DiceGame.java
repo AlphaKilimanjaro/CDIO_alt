@@ -11,36 +11,36 @@ import java.awt.*;
 public class DiceGame {
 
     private Boolean gameHasEnded;
-    private Player player1, player2;
-    private GUI_Player guiPlayer1, guiPlayer2;
+    private Player[] players;
+    private final int MAX_PLAYERS = 2;
+    private GUI_Player[] guiPlayers;
     private Board board;
-    private GUI_Field [] fields = new GUI_Field[12];
+    private final int TILES_COUNT = 12;
+    private GUI_Field[] guiFields;
     private GUI gui;
 
     public DiceGame() {
         createBoard();
 
-        //GUI.setNull_fields_allowed(true);
-        for(int i =0; i <= board.getTileCount()-1; i ++){
-            fields[i] = new GUI_Street(board.getTile(i).getName(), "", board.getTile(i).getText(), "", Color.WHITE, Color.BLACK);
+        guiFields = new GUI_Field[TILES_COUNT];
+        for(int i = 0; i < TILES_COUNT; i++){
+            Tile tile = board.getTile(i);
+            guiFields[i] = new GUI_Street(tile.getTitle(),"", tile.getFlavourText(),"" + tile.getGoldValue(), Color.WHITE, Color.BLACK);
         }
 
-        gui = new GUI(fields);
-       // fields[0].setCar(guiPlayer1, true);
+        gui = new GUI(guiFields);
 
         gui.showMessage("Welcome to HyperDice, earthlings! :-D");
 
-        player1 = new Player(gui.getUserString("Player 1: What is your name?"));
-        player2 = new Player(gui.getUserString("Player 2: What is your name?"));
-
-        gui.addPlayer(guiPlayer1 = new GUI_Player(player1.getName(), 1000));
-        gui.addPlayer(guiPlayer2 = new GUI_Player(player2.getName(), 1000));
-        updatePoints(player1, guiPlayer1.getBalance());
-        updatePoints(player2, guiPlayer2.getBalance());
+        players = new Player[MAX_PLAYERS];
+        guiPlayers = new GUI_Player[MAX_PLAYERS];
+        for (int p = 0; p < MAX_PLAYERS; p++) {
+            String playerName = gui.getUserString("Player " + (p + 1) + ": What is your name?");
+            players[p] = new Player(playerName, 1000);
+            gui.addPlayer(guiPlayers[p] = new GUI_Player(playerName, 1000));
+        }
 
         gui.showMessage("Alright, let's get started...");
-
-
     }
 
     public void createBoard(){
@@ -64,45 +64,22 @@ public class DiceGame {
         gameHasEnded = false;
 
         while (!gameHasEnded) {
-            Boolean nextPlayer = false;
-            while(!nextPlayer) {
-                gui.getUserString(player1.askThrow());
-                int roll = player1.rollDice();
-                move(roll, player1);
-                Tile tile = board.getTile(roll);
-                updatePoints(player1,tile.money);
-                guiPlayer1.setBalance(player1.getPoints());
-                gui.setDice(player1.getDieValue1(), player1.getDieValue2());
-                gui.showMessage(tile.getName() + ": " + tile.getText());
-                nextPlayer = doPlayerConditions(player1);
-            }
-            if(gameHasEnded) continue;
-            nextPlayer = false;
-            while(!nextPlayer) {
-                gui.getUserString(player2.askThrow());
-                int roll = player2.rollDice();
-                move(roll,player2);
-                Tile tile = board.getTile(roll);
-                updatePoints(player2,tile.money);
-                guiPlayer2.setBalance(player2.getPoints());
-                gui.setDice(player2.getDieValue1(), player2.getDieValue2());
-                gui.showMessage(tile.getName() + ": " + tile.getText());
-                nextPlayer = doPlayerConditions(player2);
+            for(int currentPlayer = 0; currentPlayer < MAX_PLAYERS && !gameHasEnded; currentPlayer++) {
+                Boolean nextPlayer = false;
+                while (!nextPlayer) {
+                    gui.getUserString(players[currentPlayer].getName() + ": Will you roll your dice?...");
 
+                    int roll = players[currentPlayer].rollDice();
+                    Tile tile = board.getTile(roll);
+                    players[currentPlayer].addPoints(tile.getGoldValue());
+
+                    updateGui(currentPlayer);
+                    showTileMessage(tile);
+
+                    nextPlayer = doPlayerConditions(players[currentPlayer]);
+                }
             }
         }
-    }
-
-    private void move (int pos,  Player player){
-        player.setcar(pos);
-        updateCars();
-    }
-    private void updateCars(){
-        for(GUI_Field fl : fields){
-            fl.removeAllCars();
-        }
-        fields[player1.getcar()].setCar(guiPlayer1, true);
-        fields[player2.getcar()].setCar(guiPlayer2, true);
     }
 
     private Boolean doPlayerConditions(Player player) {
@@ -121,8 +98,27 @@ public class DiceGame {
         return true;
     }
 
-    private void updatePoints(Player player, int point) {
-       player.addPoints(point);
-        System.out.println(player.getName() + " " + player.getPoints());
+    private void updateGui(int currentPlayer) {
+        //update all cars
+        for(int f = 0; f < TILES_COUNT; f++) {
+            guiFields[f].removeAllCars();
+        }
+
+        for (int p = 0; p < MAX_PLAYERS; p++) {
+            guiFields[players[p].getCurrentTile()].setCar(guiPlayers[p], true);
+        }
+
+        guiPlayers[currentPlayer].setBalance(players[currentPlayer].getPoints());
+        gui.setDice(players[currentPlayer].getDieValue1(), players[currentPlayer].getDieValue2());
+    }
+
+    private void showTileMessage(Tile tile) {
+        String message = "You have hit " + tile.getTitle() + ": " + tile.getFlavourText() + ". ";
+        int gold = tile.getGoldValue();
+        if(gold > 0)
+            message += "You get " + gold + " points! :-D";
+        else if(gold < 0)
+            message += "You loose " + gold + " points... :(";
+        gui.showMessage(message);
     }
 }

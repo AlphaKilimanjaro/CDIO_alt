@@ -21,16 +21,16 @@ class TileTest {
     @Test
     void getName() {
 
-        assertEquals("test1", tile.getName());
+        assertEquals("test1", tile.getTitle());
     }
 
     @Test
     void getText() {
-        assertEquals("test1+1", tile.getText());
+        assertEquals("test1+1", tile.getFlavourText());
     }
 
     @Test
     void getMoney() {
-        assertEquals(500, tile.getMoney());
+        assertEquals(500, tile.getGoldValue());
     }
 }

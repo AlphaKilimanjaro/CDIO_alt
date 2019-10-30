@@ -15,7 +15,7 @@ public class Tile {
         money = _money;
     }
 
-    public String getName() { return name; }
-    public String getText() { return text; }
-    public int getMoney() { return money; }
+    public String getTitle() { return name; }
+    public String getFlavourText() { return text; }
+    public int getGoldValue() { return money; }
 }
