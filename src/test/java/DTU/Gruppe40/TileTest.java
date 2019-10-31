@@ -1,3 +1,5 @@
+package DTU.Gruppe40;
+
 import DTU.Gruppe40.Tile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
