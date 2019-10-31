@@ -1,10 +1,13 @@
 package DTU.Gruppe40;
 
+import gui_codebehind.GUI_Center;
 import gui_codebehind.GUI_FieldFactory;
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
 import gui_fields.GUI_Street;
 import gui_main.GUI;
+
+
 
 import java.awt.*;
 
@@ -19,6 +22,7 @@ public class DiceGame {
     private GUI_Field[] guiFields;
     private GUI gui;
 
+
     public DiceGame() {
         createBoard();
 
@@ -27,8 +31,14 @@ public class DiceGame {
             Tile tile = board.getTile(i);
             guiFields[i] = new GUI_Street(tile.getTitle(),"", tile.getFlavourText(),"" + tile.getGoldValue(), Color.WHITE, Color.BLACK);
         }
+        GUI_Center guic = GUI_Center.getInstance();
+
+
 
         gui = new GUI(guiFields);
+
+        guic.setBGColor(Color.WHITE);
+        guic.setChanceCard("Velkommen");
 
         gui.showMessage("Welcome to HyperDice, earthlings! :-D");
 
@@ -45,6 +55,7 @@ public class DiceGame {
 
     public void createBoard(){
         board = new Board(12);
+
         board.addTile("theBlackHole", "Man kan ikke slå 1 med to terninger", 0);
         board.addTile("Tower", "The TwinTowers have been destroyed", 250);
         board.addTile("Crater", "The Crater smells bad, but looks great", -100);
@@ -70,7 +81,8 @@ public class DiceGame {
                     gui.getUserString(players[currentPlayer].getName() + ": Will you roll your dice?...");
 
                     int roll = players[currentPlayer].rollDice();
-                    Tile tile = board.getTile(roll);
+                    Tile tile = board.getTile(roll-1);
+                    System.out.println(currentPlayer);
                     players[currentPlayer].addPoints(tile.getGoldValue());
 
                     updateGui(currentPlayer);

@@ -34,7 +34,7 @@ public class Player {
         int value1 = die1.roll();
         int value2 = die2.roll();
 
-        return currentTile = value1 + value2;
+        return currentTile = value1 + value2 -1;
     }
 
     public int getCurrentTile() {
