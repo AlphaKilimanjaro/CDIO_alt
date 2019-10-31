@@ -30,6 +30,7 @@ public class DiceGame {
 
         gui = new GUI(guiFields);
 
+
         gui.showMessage("Welcome to HyperDice, earthlings! :-D");
 
         players = new Player[MAX_PLAYERS];
@@ -45,6 +46,7 @@ public class DiceGame {
 
     public void createBoard(){
         board = new Board(12);
+
         board.addTile("theBlackHole", "Man kan ikke slå 1 med to terninger", 0);
         board.addTile("Tower", "The TwinTowers have been destroyed", 250);
         board.addTile("Crater", "The Crater smells bad, but looks great", -100);
@@ -70,7 +72,8 @@ public class DiceGame {
                     gui.getUserString(players[currentPlayer].getName() + ": Will you roll your dice?...");
 
                     int roll = players[currentPlayer].rollDice();
-                    Tile tile = board.getTile(roll);
+                    Tile tile = board.getTile(roll-1);
+                    System.out.println(currentPlayer);
                     players[currentPlayer].addPoints(tile.getGoldValue());
 
                     updateGui(currentPlayer);
