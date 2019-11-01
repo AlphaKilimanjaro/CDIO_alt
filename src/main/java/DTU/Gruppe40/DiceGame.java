@@ -44,12 +44,17 @@ public class DiceGame {
 
         players = new Player[MAX_PLAYERS];
         guiPlayers = new GUI_Player[MAX_PLAYERS];
-        for (int p = 0; p < MAX_PLAYERS; p++) {
-            String playerName = gui.getUserString("Player " + (p + 1) + ": What is your name?");
-            players[p] = new Player(playerName, 1000);
-            gui.addPlayer(guiPlayers[p] = new GUI_Player(playerName, 1000));
-        }
 
+        String playerName1 = gui.getUserString("Player " + (1) + ": What is your name?");
+        players[0] = new Player(playerName1, 1000);
+        gui.addPlayer(guiPlayers[0] = new GUI_Player(playerName1, 1000));
+
+        String playerName2 = gui.getUserString("Player " + (2) + ": What is your name?");
+        while(playerName1.equals(playerName2)) {
+            playerName2 = gui.getUserString("Player " + (2) + ": Type a different name. Please.");
+        }
+        players[1] = new Player(playerName2, 1000);
+        gui.addPlayer(guiPlayers[1] = new GUI_Player(playerName2, 1000));
         gui.showMessage("Alright, let's get started...");
     }
 
